@@ -2,7 +2,9 @@
 Description=Ansible-pull timer
 
 [Timer]
-OnCalendar=*-*-* *:0/5:00
+OnBootSec=15min
+OnUnitActiveSec=5m
+RandomizedDelaySec=30
 Service=ansible-pull.service
 
 [Install]
