@@ -1,0 +1,32 @@
+- name: Install default packages
+  ansible.builtin.apt:
+    name:
+      - build-essential
+      - jq
+      - tmux
+      - curl
+      - wget
+      - htop
+      - git
+      - vim
+      - python3-venv
+      - python3-wheel
+      - unzip
+    cache_valid_time: 300
+
+- name: Add Fish shell PPA Repository
+  ansible.builtin.apt_repository:
+    repo: ppa:fish-shell/release-4
+
+- name: Install fish shell
+  ansible.builtin.apt:
+    name:
+      - fish
+    cache_valid_time: 300
+
+- name: Set sysctl settings
+  ansible.posix.sysctl:
+    name: 'vm.swappiness'
+    value: '10'
+  when: ansible_memtotal_mb >= 16384
+

@@ -1,0 +1,36 @@
+- name: Add Docker GPG Key
+  ansible.builtin.apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+
+- name: Add Docker CE APT Repository
+  ansible.builtin.apt_repository:
+    repo: deb [arch=amd64 ] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
+    state: present
+
+- name: Install Docker CE
+  ansible.builtin.apt:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+    cache_valid_time: 300
+
+- name: Install docker.json
+  ansible.builtin.template:
+    src: docker.json.j2
+    dest: /etc/docker/docker.json
+    owner: root
+    group: root
+    mode: 0644
+  notify: Restart docker
+
+- name: Set sysctl settings
+  ansible.posix.sysctl:
+    name: '{{ item.name }}'
+    value: '{{ item.value }}'
+  with_items:
+    - { name: 'fs.inotify.max_user_instances', value: '8192'}
+    - { name: 'fs.inotify.max_user_watches', value: '524288'}
