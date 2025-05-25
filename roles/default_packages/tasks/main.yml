@@ -1,7 +1,10 @@
 - name: Install default packages
   ansible.builtin.apt:
     name:
+      - ubuntu-restricted-addons
       - build-essential
+      - ufw
+      - openssh-server
       - jq
       - tmux
       - curl
