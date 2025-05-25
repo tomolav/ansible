@@ -2,6 +2,13 @@
   community.general.snap:
     name: firefox
     state: absent 
+  register: firefox_snap_removed
+
+- name: Remove firefox snap dummy package
+  ansible.builtin.apt:
+    name: firefox
+    state: absent
+  when: firefox_snap_removed.changed
 
 - name: Install Mozilla Firefox GPG Key
   ansible.builtin.get_url:
@@ -28,6 +35,5 @@
 - name: Install Mozilla Firefox
   ansible.builtin.apt:
     name: firefox
-    allow_downgrade: true
     cache_valid_time: 300
 
