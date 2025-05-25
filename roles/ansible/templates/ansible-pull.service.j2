@@ -5,7 +5,7 @@ Description=Ansible-pull service
 Type=simple
 User=ansible
 Group=ansible
-ExecStart=ansible-pull -U https://github.com/tomolav/ansible.git install.yml
+ExecStart=ansible-pull -U https://github.com/tomolav/ansible.git -o install.yml 
 
 
 [Install]
