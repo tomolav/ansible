@@ -1,0 +1,48 @@
+- name: Install ansible
+  ansible.builtin.apt:
+    name: ansible
+    cache_valid_time: 300
+
+- name: Add ansible group
+  ansible.builtin.group:
+    name: ansible
+    system: true
+    state: present
+
+- name: Add ansible user 
+  ansible.builtin.user:
+    name: ansible
+    group: ansible
+    system: true
+    home: /var/lib/ansible
+    create_home: true
+    shell: /sbin/nologin
+
+- name: Give ansible user sudoers access
+  ansible.builtin.copy:
+    content: "ansible ALL=(ALL) NOPASSWD:ALL"
+    dest: /etc/sudoers.d/ansible
+
+- name: Install ansible-pull service
+  ansible.builtin.template:
+    src: ansible-pull.service.j2
+    dest: /etc/systemd/system/ansible-pull.service
+    owner: root
+    group: root
+    mode: 644
+  notify: Reload systemctl
+
+- name: Install ansible-pull timer 
+  ansible.builtin.template:
+    src: ansible-pull.timer.j2
+    dest: /etc/systemd/system/ansible-pull.timer
+    owner: root
+    group: root
+    mode: 644
+  notify: Reload systemctl
+
+- name: Start ansible-pull.timer
+  ansible.builtin.systemd_service:
+    name: ansible-pull.timer
+    state: started
+    enabled: true

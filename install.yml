@@ -3,5 +3,6 @@
   become: true
 
   roles:
+    - ansible
     - default_packages
     - docker
