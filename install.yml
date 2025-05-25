@@ -6,3 +6,5 @@
     - ansible
     - default_packages
     - docker
+    - vscode
+    - firefox
