@@ -28,5 +28,6 @@
 - name: Install Mozilla Firefox
   ansible.builtin.apt:
     name: firefox
+    allow_downgrade: true
     cache_valid_time: 300
 
