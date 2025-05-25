@@ -5,6 +5,8 @@
   roles:
     - ansible
     - default_packages
+    - sshd
+    - firewall
     - docker
     - vscode
     - firefox
